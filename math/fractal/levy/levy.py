@@ -4,10 +4,10 @@ from math import sqrt
 from itertools import accumulate
 
 # global parameters
-SIZE = (1000, 800)
+SIZE = (1280, 1024)
 WIDTH, HEIGHT = SIZE
-STARTP = (300, 250)
-STARTD = 400
+STARTP = (340, 250)
+STARTD = 600
 FPS = 10
 
 # global contants
@@ -74,6 +74,7 @@ def main():
     curves = levy(16, STARTP, STARTD)
     pg.init()
     surf = pg.display.set_mode(SIZE)
+    pg.mouse.set_visible(0)
     pg.display.set_caption('Levy C curve')
     clock = pg.time.Clock()
     font = pg.font.SysFont('Arial', 20)

@@ -6,9 +6,12 @@ import pygame as pg
 # setup pygame
 size = (924, 800)
 #size = (1024, 1024)
+#size = (1280, 1024)
 width, height = size
 pg.init()
 surf = pg.display.set_mode(size)
+#surf = pg.display.set_mode(size, pg.FULLSCREEN)
+pg.mouse.set_visible(0)
 pg.display.set_caption('chaos game')
 clock = pg.time.Clock()
 font = pg.font.SysFont("Arial", 12)

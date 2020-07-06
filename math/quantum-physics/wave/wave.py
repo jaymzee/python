@@ -57,9 +57,12 @@ def draw():
 # setup pygame
 fps = 60
 size = (400, 400)
+#size = (1280, 1024)
 width, height = size
 pg.init()
 surf = pg.display.set_mode(size)
+#surf = pg.display.set_mode(size, pg.FULLSCREEN)
+pg.mouse.set_visible(0)
 pg.display.set_caption('wave function')
 clock = pg.time.Clock()
 

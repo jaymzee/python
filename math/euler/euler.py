@@ -3,8 +3,8 @@ import math
 import pygame
 
 
-
 size = (400, 400)
+#size = (1280, 1024)
 width, height = size
 fps = 5
 
@@ -19,12 +19,15 @@ purple = (255, 0, 255)
 grey   = (64, 64, 64)
 
 sf_n = 21     # number of slope fields
-sf_r = 4      # radius of slope
+sf_r = 4      # radius of slope field mark
+
 
 def main():
     pygame.init()
     surf = pygame.display.set_mode(size)
+    #surf = pygame.display.set_mode(size, pygame.FULLSCREEN)
     clock = pygame.time.Clock()
+    pygame.mouse.set_visible(0)
 
     plot_example_2(surf)
 
@@ -102,7 +105,12 @@ def plot_euler(surf, f, x0, y0, xf, step, **kwargs):
 
 
 def plot_example_hyperbolic(s):
-    f = lambda x, y: x / y
+    def f(x,y):
+        if y == 0:
+            return math.inf
+        else:
+            return x / y
+
     pygame.display.set_caption("Euler's method:  dy/dx = x/y")
     plot_slope_field(s, f)
     plot_euler(s, f, 0.3, 0.02, 1.0, 0.0001)
@@ -111,7 +119,12 @@ def plot_example_hyperbolic(s):
 
 
 def plot_example_circular(s):
-    f = lambda x, y: -x / y
+    def f(x,y):
+        if y == 0:
+            return math.inf
+        else:
+            return -x / y
+
     pygame.display.set_caption("Euler's method:  dy/dx = -x/y")
     plot_slope_field(s, f)
     plot_euler(s, f, -0.95,  0.1, 0.95, 0.0001, color=red)
