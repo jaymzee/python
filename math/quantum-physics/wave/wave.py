@@ -19,7 +19,7 @@ def plot_mag(y):
         vm, vp = cmath.polar(v)
         vy = 20 * vm ** 2
         c = phase_to_color(vp)
-        pg.draw.line(surf, c, (xx, 150), (xx, 150 - vy))
+        pg.draw.line(surf, c, (int(xx), int(150)), (int(xx), int(150 - vy)))
         xx += 10
     pg.draw.line(surf, red, (50, 150), (xx, 150))
 
@@ -30,7 +30,7 @@ def plot_vec(y):
         vx = 40 * v.real
         vy = 40 * v.imag
         c = phase_to_color(cmath.phase(v))
-        pg.draw.line(surf, c, (xx, yy), (xx + vx, yy - vy))
+        pg.draw.line(surf, c, (xx, yy), (int(xx + vx), int(yy - vy)))
         xx += 10
         yy -= 5
     pg.draw.line(surf, red, (50, 350), (xx, yy))

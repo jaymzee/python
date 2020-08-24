@@ -39,7 +39,7 @@ def curve(p1, d, s):
     dy = [0, 1/SQRT2,  1,  1/SQRT2,  0, -1/SQRT2, -1, -1/SQRT2]
     a = 0
     x, y = p1
-    yield (x, y)
+    yield (int(x), int(y))
     for c in s:
         if c == '+':
             a = (a + 1) % 8
@@ -48,7 +48,7 @@ def curve(p1, d, s):
         elif c == 'F':
             x += d * dx[a]
             y += d * dy[a]
-            yield (x, y)
+            yield (int(x), int(y))
 
 
 def levy(n, p1, d):

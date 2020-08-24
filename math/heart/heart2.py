@@ -30,7 +30,7 @@ def draw(surf, font, fps, factor):
     fps_text = font.render("%.1f fps" % fps, 0, YELLOW)
     fac_text = font.render("%.3f" % factor, 0, WHITE)
     surf.blit(fps_text, (10, 10))
-    surf.blit(fac_text, (CX - R, CY / 4))
+    surf.blit(fac_text, (int(CX - R), int(CY / 4)))
     n1 = np.arange(POINTS)
     n2 = factor * n1
     theta = 2 * np.pi * n1 / POINTS
@@ -40,7 +40,8 @@ def draw(surf, font, fps, factor):
     x2 = CX - R * np.cos(phi)
     y2 = CY - R * np.sin(phi)
     for n in n1:
-        pg.draw.line(surf, GREEN, (x[n], y[n]), (x2[n], y2[n]))
+        pg.draw.line(surf, GREEN, (int(x[n]), int(y[n])),
+                                  (int(x2[n]), int(y2[n])))
 
 
 def main():

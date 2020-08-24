@@ -53,8 +53,8 @@ def plot_slope_field(surf, f):
     yi = height / sf_n
     xo = xi / 2.0
     yo = yi / 2.0
-    cx = (width - 1) / 2.0
-    cy = (height - 1) / 2.0
+    cx = int((width - 1) / 2.0)
+    cy = int((height - 1) / 2.0)
 
     # draw axis
     pygame.draw.line(surf, grey, (cx, 0), (cx, height))
@@ -69,8 +69,8 @@ def plot_slope_field(surf, f):
             dx = sf_r * math.cos(t)
             dy = sf_r * math.sin(t)
             pygame.draw.line(surf, grey,
-                             (j * xi + xo - dx, i * yi + yo + dy),
-                             (j * xi + xo + dx, i * yi + yo - dy))
+                             (int(j * xi + xo - dx), int(i * yi + yo + dy)),
+                             (int(j * xi + xo + dx), int(i * yi + yo - dy)))
 
 
 def plot_euler(surf, f, x0, y0, xf, step, **kwargs):
@@ -96,10 +96,10 @@ def plot_euler(surf, f, x0, y0, xf, step, **kwargs):
         y1 = y0 + step * f(x0, y0)
         x1 = x0 + step
         pygame.draw.line(surf, color,
-                         ((x0 + 1.0) / 2.0 * (sf_n - 1) * xi + xo,
-                          (1.0 - y0) / 2.0 * (sf_n - 1) * yi + yo),
-                         ((x1 + 1.0) / 2.0 * (sf_n - 1) * xi + xo,
-                          (1.0 - y1) / 2.0 * (sf_n - 1) * yi + yo))
+                         (int((x0 + 1.0) / 2.0 * (sf_n - 1) * xi + xo),
+                          int((1.0 - y0) / 2.0 * (sf_n - 1) * yi + yo)),
+                         (int((x1 + 1.0) / 2.0 * (sf_n - 1) * xi + xo),
+                          int((1.0 - y1) / 2.0 * (sf_n - 1) * yi + yo)))
         x0 = x1
         y0 = y1
 
