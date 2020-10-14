@@ -14,7 +14,7 @@ class lfsr(object):
     def __repr__(self):
         return 'lfsr(%08x, %08x)' % (self.poly, self.r)
 
-    def taps1(self):
+    def __taps(self):
         p = self.poly
         t = [0]
         c = 1
@@ -24,23 +24,18 @@ class lfsr(object):
             p = p >> 1
             c += 1
         c -= 1
+        return c, t
+
+    def taps1(self):
+        c, t = self.__taps()
         t.sort(reverse=True)
         return t
 
     def taps2(self):
-        p = self.poly
-        t = [0]
-        c = 1
-        while p:
-            if p & 1:
-                t.append(c)
-            p = p >> 1
-            c += 1
-        c -= 1
-        t = [c-x for x in t]
-        return t
+        c, t = self.__taps()
+        return [c-x for x in t]
 
-def table():
+def gen_table():
     for i in range(32):
         pn = lfsr(i, 1)
         print("taps2 0x%02x: %s" % (i, pn.taps2()))
