@@ -44,17 +44,20 @@ if __name__ == '__main__':
     period = 0
     poly = 0xaa2255dd
     iv = 1
+    print_max = 16
     if len(sys.argv) > 1:
         poly = int(sys.argv[1], 16)
     if len(sys.argv) > 2:
         iv = int(sys.argv[2], 16)
+    if len(sys.argv) > 3:
+        print_max = int(sys.argv[3], 0)
 
     pn = lfsr(poly, iv)
 
     print('taps1: %s' % pn.taps1())
     print('taps2: %s' % pn.taps2())
     while True:
-        if period < 16:
+        if period < print_max:
             print("%s = %d" % (pn, pn.r & 1))
         pn.shift()
         period += 1
