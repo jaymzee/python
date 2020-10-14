@@ -43,30 +43,27 @@ class lfsr(object):
 def table():
     for i in range(32):
         pn = lfsr(i, 1)
-        print(pn.taps(), "0x%02x" % i)
+        print("taps2 0x%02x: %s" % (i, pn.taps2()))
 
 if __name__ == '__main__':
-    #pn = lfsr(0xaa2255dd, 1)
-    cfg = 0x402
+    period = 0
+    poly = 0xaa2255dd
+    iv = 1
     if len(sys.argv) > 1:
-        cfg = int(sys.argv[1], 16)
-    pn = lfsr(cfg, 1)
-    print('taps1', pn.taps1())
-    print('taps2', pn.taps2())
+        poly = int(sys.argv[1], 16)
+    if len(sys.argv) > 2:
+        iv = int(sys.argv[2], 16)
 
-    for i in range(16):
-        print(pn)
-        pn.shift()
+    pn = lfsr(poly, iv)
 
-    #pn = lfsr(0x500, 1)
-    pn = lfsr(cfg, 1)
-    #check maximal length code
-    last = pn.r
-    c = 0
+    print('taps1: %s' % pn.taps1())
+    print('taps2: %s' % pn.taps2())
     while True:
-        #print(pn.r)
+        if period < 16:
+            print("%s = %d" % (pn, pn.r & 1))
         pn.shift()
-        c += 1
-        if pn.r == last:
+        period += 1
+        if pn.r == iv:
             break
-    print('count=%d' % c)
+
+    print('period = %d' % period)

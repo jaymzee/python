@@ -6,16 +6,25 @@
 #  |   -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 #  |                                  v     v  v     v
 #   ----------------------------------+-----+--+-----+
+#
+#       1  2  3  4
+#      -- -- -- --
+#   ->|  |  |  |  |
+#  |   -- -- -- --
+#  |          v  v
+#   -------------+
 
-lfsr = 0xACE1
+lfsr = 0x1
 period = 0
 
-for i in range(16):
-    print(hex(lfsr))
-    bit = (lfsr >> 0) ^ (lfsr >> 2) ^ (lfsr >> 3) ^ (lfsr >> 5) & 1
-    lfsr = (lfsr >> 1) | (bit << 15) & 0xFFFF
+while True:
+    if period < 16:
+        print(hex(lfsr), lfsr & 1)
+    #bit = (lfsr >> 0) ^ (lfsr >> 2) ^ (lfsr >> 3) ^ (lfsr >> 5) & 1
+    bit = (lfsr >> 0) ^ (lfsr >> 1) & 1
+    lfsr = (lfsr >> 1) | (bit << 3) & 0xF
     period += 1
-    if lfsr == 0xACE1:
+    if lfsr == 0x1:
         break
 
 print(period)
