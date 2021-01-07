@@ -8,15 +8,17 @@ SIZE = (1000, 1000)
 WIDTH, HEIGHT = SIZE
 
 BLACK = (0, 0, 0)
+RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 
-colors = [BLACK, GREEN]
+colors = [GREEN, RED]
 
 
 def draw(surf, n):
+    color = colors[n & 1]
     for y in range(HEIGHT):
         for x in range(WIDTH):
-            surf.set_at((x, y), colors[n & 1]);
+            surf.set_at((x, y), color);
 
 
 def main():
