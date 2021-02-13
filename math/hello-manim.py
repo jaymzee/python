@@ -32,10 +32,10 @@ class SquareToCircle(Scene):
         self.wait()
 
 
-class SurfaceExample3(ThreeDScene):
+class SurfaceTorus(ThreeDScene):
     def construct(self):
         axes = ThreeDAxes()
-        c=1
+        c=2
         a=1
         trr = ParametricSurface(
             lambda u, v : np.array([
@@ -43,29 +43,18 @@ class SurfaceExample3(ThreeDScene):
                  (c + a * math.cos(TAU * v)) * math.sin(TAU * u),
                  a * np.sin(TAU * v)
              ]),
-            resolution=(6, 32)).fade(0.7) #Resolution of the surfaces
+            resolution=(6, 6)).fade(0.7) #Resolution of the surfaces
 
-        self.set_camera_orientation(phi=60 * DEGREES,theta=-45*DEGREES)
+        self.set_camera_orientation(phi=60*DEGREES, theta=-45*DEGREES)
         self.add(axes)
 
         self.play(Write(trr))
         self.wait()
-        self.begin_ambient_camera_rotation(rate=0.1)
-
-
-class SurfaceExample2(ThreeDScene):
-    def construct(self):
-        axes = ThreeDAxes()
-        self.move_camera(phi=70 * DEGREES, theta=-30 * DEGREES)
-        surface = ParametricSurface(lambda u, v: [u, v, u+v], resolution=(32, 32)).fade(0.9)
-
-        self.play(ShowCreation(surface), ShowCreation(axes))
+        self.move_camera(phi=30*DEGREES, theta=45*DEGREES)
         self.wait()
-        self.begin_ambient_camera_rotation(rate=0.1)
-        self.wait(5)
 
 
-class SurfaceExample(ThreeDScene):
+class SurfaceSphere(ThreeDScene):
     def construct(self):
         axes = ThreeDAxes()
         self.move_camera(phi=70 * DEGREES, theta=-30 * DEGREES)
