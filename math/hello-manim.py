@@ -3,20 +3,23 @@ from manimlib.imports import *
 class TestScene(Scene):
     def construct(self):
         circ = Circle()
-        t = TextMobject("Hello manim!")
-        t.scale(2)
+        text = TextMobject("Hello manim!")
+        text.scale(2)
 
-        tex = TexMobject(
-            "\\sum_{k=1}^\\infty {1 \\over k^2} = {\\pi^2 \\over 6}",
-        )
+        tex = TexMobject(r"\sum_{k=1}^\infty {1 \over k^2} = {\pi^2 \over 6}")
 
-        group = VGroup(t, tex)
+        group = VGroup(text, tex)
         group.arrange(DOWN)
 
+        #img = SVGMobject("animated-pi.svg")
+        img = ImageMobject("SupportIcon.png")
+
+        self.add(img)
         self.play(ShowCreation(circ))
-        self.play(Write(t))
+        self.play(Write(text))
         self.play(Write(tex))
         self.wait()
+        
 
 
 class SquareToCircle(Scene):
@@ -64,7 +67,7 @@ class SurfaceSphere(ThreeDScene):
         self.wait()
         self.begin_ambient_camera_rotation(rate=0.1)
         self.wait(5)
-        
+
 
 class Graph2dFunc(GraphScene):
     CONFIG = {
