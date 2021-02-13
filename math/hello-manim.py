@@ -32,6 +32,39 @@ class SquareToCircle(Scene):
         self.wait()
 
 
+class SurfaceExample3(ThreeDScene):
+    def construct(self):
+        axes = ThreeDAxes()
+        c=1
+        a=1
+        trr = ParametricSurface(
+            lambda u, v : np.array([
+                 (c + a * math.cos(TAU * v)) * math.cos(TAU * u),
+                 (c + a * math.cos(TAU * v)) * math.sin(TAU * u),
+                 a * np.sin(TAU * v)
+             ]),
+            resolution=(6, 32)).fade(0.7) #Resolution of the surfaces
+
+        self.set_camera_orientation(phi=60 * DEGREES,theta=-45*DEGREES)
+        self.add(axes)
+
+        self.play(Write(trr))
+        self.wait()
+        self.begin_ambient_camera_rotation(rate=0.1)
+
+
+class SurfaceExample2(ThreeDScene):
+    def construct(self):
+        axes = ThreeDAxes()
+        self.move_camera(phi=70 * DEGREES, theta=-30 * DEGREES)
+        surface = ParametricSurface(lambda u, v: [u, v, u+v], resolution=(32, 32)).fade(0.9)
+
+        self.play(ShowCreation(surface), ShowCreation(axes))
+        self.wait()
+        self.begin_ambient_camera_rotation(rate=0.1)
+        self.wait(5)
+
+
 class SurfaceExample(ThreeDScene):
     def construct(self):
         axes = ThreeDAxes()
@@ -40,6 +73,8 @@ class SurfaceExample(ThreeDScene):
 
         self.play(ShowCreation(sphere), ShowCreation(axes))
         self.wait()
+        self.begin_ambient_camera_rotation(rate=0.1)
+        self.wait(5)
         
 
 class Graph2dFunc(GraphScene):
@@ -72,3 +107,4 @@ class Graph2dFunc(GraphScene):
         self.play(ReplacementTransform(graph2, graph3), 
                   ReplacementTransform(graph_label2, graph_label3))
         self.wait(1)
+
