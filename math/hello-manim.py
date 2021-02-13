@@ -14,12 +14,25 @@ class TestScene(Scene):
         #img = SVGMobject("animated-pi.svg")
         img = ImageMobject("SupportIcon.png")
 
+        # self.play(text, rate_func=rush_into)
+
         self.add(img)
+        self.wait()
+        self.remove(img)
         self.play(ShowCreation(circ))
-        self.play(Write(text))
+        self.wait()
+        self.play(Transform(circ, text))
+        self.wait()
         self.play(Write(tex))
         self.wait()
         
+
+class TestScene2(Scene):
+    def construct(self):
+        tex = TexMobject(r'e^{i \pi} + 1 = 0')
+
+        self.play(Write(tex))
+        self.wait()
 
 
 class SquareToCircle(Scene):
@@ -99,4 +112,39 @@ class Graph2dFunc(GraphScene):
         self.play(ReplacementTransform(graph2, graph3), 
                   ReplacementTransform(graph_label2, graph_label3))
         self.wait(1)
+
+class GraphAxes(GraphScene):
+    def construct(self):
+        ax = Axes(
+            axis_config = {
+                "color": BLUE
+            },
+            x_min=-4,
+            x_max=4,
+            y_min=-4,
+            y_max=4,
+        )
+        f = ax.get_graph(lambda x: 1 if x > 0 else -1, discontinuities=[0])
+        #f2 = FunctionGraph(lambda t: t*t)
+        f2 = ParametricFunction(lambda t: [np.cos(TAU * t), np.sin(TAU * t), 0])
+
+        self.add(ax)
+        self.wait()
+        self.play(Write(f))
+        self.wait()
+        self.play(Write(f2))
+        self.wait()
+
+
+class NumberLineTest(Scene):
+    def construct(self):
+        n = NumberLine(
+            x_min=-5, 
+            x_max=5, 
+            include_tip=True, 
+            include_numbers=True
+        )
+
+        self.add(n)
+        self.wait()
 
