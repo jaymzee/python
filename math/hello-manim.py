@@ -25,7 +25,7 @@ class TestScene(Scene):
         self.wait()
         self.play(Write(tex))
         self.wait()
-        
+
 
 class TestScene2(Scene):
     def construct(self):
@@ -54,12 +54,13 @@ class SurfaceTorus(ThreeDScene):
         c=2
         a=1
         trr = ParametricSurface(
-            lambda u, v : np.array([
-                 (c + a * math.cos(TAU * v)) * math.cos(TAU * u),
-                 (c + a * math.cos(TAU * v)) * math.sin(TAU * u),
-                 a * np.sin(TAU * v)
-             ]),
-            resolution=(6, 6)).fade(0.7) #Resolution of the surfaces
+            lambda u, v : [
+                (c + a * math.cos(TAU * v)) * math.cos(TAU * u),
+                (c + a * math.cos(TAU * v)) * math.sin(TAU * u),
+                a * np.sin(TAU * v)
+            ],
+            resolution=(6, 6)
+        ).fade(0.7)
 
         self.set_camera_orientation(phi=60*DEGREES, theta=-45*DEGREES)
         self.add(axes)
@@ -106,10 +107,10 @@ class Graph2dFunc(GraphScene):
         # Display graph
         self.play(ShowCreation(graph), Write(graph_label))
         self.wait(1)
-        self.play(ReplacementTransform(graph, graph2), 
+        self.play(ReplacementTransform(graph, graph2),
                   ReplacementTransform(graph_label, graph_label2))
         self.wait(1)
-        self.play(ReplacementTransform(graph2, graph3), 
+        self.play(ReplacementTransform(graph2, graph3),
                   ReplacementTransform(graph_label2, graph_label3))
         self.wait(1)
 
@@ -126,7 +127,13 @@ class GraphAxes(GraphScene):
         )
         f = ax.get_graph(lambda x: 1 if x > 0 else -1, discontinuities=[0])
         #f2 = FunctionGraph(lambda t: t*t)
-        f2 = ParametricFunction(lambda t: [np.cos(TAU * t), np.sin(TAU * t), 0])
+        f2 = ParametricFunction(
+            lambda t: [
+                np.cos(TAU * t),
+                np.sin(TAU * t),
+                0
+            ]
+        )
 
         self.add(ax)
         self.wait()
@@ -139,9 +146,9 @@ class GraphAxes(GraphScene):
 class NumberLineTest(Scene):
     def construct(self):
         n = NumberLine(
-            x_min=-5, 
-            x_max=5, 
-            include_tip=True, 
+            x_min=-5,
+            x_max=5,
+            include_tip=True,
             include_numbers=True
         )
 
