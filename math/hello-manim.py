@@ -59,8 +59,8 @@ class SurfaceTorus(ThreeDScene):
                 (c + a * math.cos(TAU * v)) * math.sin(TAU * u),
                 a * np.sin(TAU * v)
             ],
-            resolution=(6, 6)
-        ).fade(0.7)
+            resolution=(6, 16)
+        ).fade(0.3)
 
         self.set_camera_orientation(phi=60*DEGREES, theta=-45*DEGREES)
         self.add(axes)
@@ -114,6 +114,7 @@ class Graph2dFunc(GraphScene):
                   ReplacementTransform(graph_label2, graph_label3))
         self.wait(1)
 
+
 class GraphAxes(GraphScene):
     def construct(self):
         ax = Axes(
@@ -129,8 +130,8 @@ class GraphAxes(GraphScene):
         #f2 = FunctionGraph(lambda t: t*t)
         f2 = ParametricFunction(
             lambda t: [
-                np.cos(TAU * t),
-                np.sin(TAU * t),
+                (1 + np.cos(TAU * t)) * np.cos(TAU * t),
+                (1 + np.cos(TAU * t)) * np.sin(TAU * t),
                 0
             ]
         )
@@ -140,6 +141,32 @@ class GraphAxes(GraphScene):
         self.play(Write(f))
         self.wait()
         self.play(Write(f2))
+        self.wait()
+
+
+class Cardioid(GraphScene):
+    def construct(self):
+        ax = Axes(
+            axis_config = {
+                "color": BLUE
+            },
+            x_min=-4,
+            x_max=4,
+            y_min=-4,
+            y_max=4,
+        )
+        r = lambda theta: 1 + np.cos(theta)
+        f = ParametricFunction(
+            lambda t: [
+                r(TAU * t) * np.cos(TAU * t),
+                r(TAU * t) * np.sin(TAU * t),
+                0
+            ]
+        )
+
+        self.add(ax)
+        self.wait()
+        self.play(Write(f))
         self.wait()
 
 
