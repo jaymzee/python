@@ -4,26 +4,34 @@ batch gradient descent
 
 import numpy as np
 
-m = 100             # number of samples
-n = 2               # number of features
-alpha = 1           # learning rate
-threshold = 0.00001 # close enough
-theta = np.zeros(n + 1) # parameters
+def batch_gradient_descent(h, θ, X, y, **kwargs):
+    count = 0
+    α = kwargs.get("alpha", 0.01)
+    threshold = kwargs.get("threshold", 0.001)
+    while True:
+        count += 1
+        d = α * (h(θ, X) - y) @ X
+        θ -= d
+        if np.linalg.norm(d) < threshold:
+            break
+    return count
+
 
 # generate data set
+m = 10000               # number of samples
+n = 2                   # number of features
 X = np.vstack([np.ones(m), np.random.rand(n, m) * 1]).T
 v = np.array([3.0, 1.5, 2.1])   #  y = 3.0 + 1.5 x1 + 2.1 x2
 y = X @ v + np.random.normal(size=m, scale=0.1)
 
-iterations = 0
-while True:
-    iterations += 1
-    h = X @ theta
-    delta = -alpha / m * (h - y) @ X
-    theta += delta
-    if np.linalg.norm(delta) < threshold:
-        break
-
-print(theta)
+# determine parameters using data set and batch gradient descent
+theta = np.zeros(n + 1) # initialize parameters
+iterations = batch_gradient_descent(
+    lambda θ, x: x @ θ,
+    theta, X, y,
+    alpha=1/m,
+    threshold=1E-9
+)
 print("hypothesis computed in %d iterations using batch gradient descent" %
       iterations)
+print(theta)
