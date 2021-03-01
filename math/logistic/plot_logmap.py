@@ -1,15 +1,15 @@
 """
-logistic map
+plot logistic map
 """
 
 import numpy as np
 import matplotlib.pyplot as plt
 from fixed import fixed_point
-from logistic import logistic
+from logistic import logistic_map
 
 
 def f(r, x0, N):
-    return fixed_point(lambda x: logistic(r, x), x0, N)
+    return fixed_point(lambda x: logistic_map(r, x), x0, N)
 
 
 N = 20
