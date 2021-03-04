@@ -1,5 +1,4 @@
 import numpy as np
-import scipy.stats
 import matplotlib.pyplot as plt
 from matplotlib import animation
 
@@ -14,7 +13,7 @@ def animate(i):
     return line,
 
 ani = animation.FuncAnimation(
-        fig, animate, interval=20, blit=True, save_count=50)
+        fig, animate, interval=16, blit=True, save_count=50)
 
 # to save animation, use e.g.
 # ani.save("movie.mp4")
