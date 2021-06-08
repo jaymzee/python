@@ -35,7 +35,13 @@ def task(id):
         abort(404)
     if request.method == 'PUT':
         task.completed = request.json['completed']
-        session.commit()
+        try:
+            session.commit()
+        except SQLAlchemyError as err:
+            err_msg = err._message()
+            print(err_msg)
+            session.rollback()
+            return jsonify({"error": err_msg}), 400
     return {'task': task.to_dict()}
 
 @app.route('/tasks/', methods=['POST'])
@@ -47,8 +53,9 @@ def create_task():
     try:
         session.commit()
     except SQLAlchemyError as err:
-        print(err._message())
+        err_msg = err._message()
+        print(err_msg)
         session.rollback()
-        abort(400)
+        return jsonify({"error": err_msg}), 400
 
     return {'task': task.to_dict()}
