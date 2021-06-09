@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import Task from './Task';
+import Tasks from './Tasks';
 
 function App() {
   return (
@@ -17,8 +17,10 @@ function App() {
           rel="noopener noreferrer"
         >
           Learn React
-          <Task />
         </a>
+        <div align="left">
+          <Tasks />
+        </div>
       </header>
     </div>
   );
