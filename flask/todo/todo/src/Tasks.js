@@ -9,7 +9,7 @@ class Tasks extends React.Component {
   handleCompleted = (e, row) => {
     const data = this.state.data;
     for (const task of data) {
-      if (task.id == row.id) {
+      if (task.id === row.id) {
         task.completed = e.target.checked;
       }
     }

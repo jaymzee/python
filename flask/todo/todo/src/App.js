@@ -1,6 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
 import Tasks from './Tasks';
+import Counter2 from './Counter2';
+import TextBox from './TextBox';
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
         <div align="left">
           <Tasks />
         </div>
+        <Counter2 />
+        <TextBox />
       </header>
     </div>
   );
