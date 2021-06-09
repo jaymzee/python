@@ -1,5 +1,5 @@
-from sqlalchemy import Column, Integer, String, Date
 from database import Base
+from sqlalchemy import Column, Integer, String, Date
 
 class Note(Base):
     __tablename__ = "notes"
@@ -9,19 +9,17 @@ class Note(Base):
     body = Column(String)
 
     def __repr__(self):
-        return '<Note title=%r' % self.title
+        return '<Note title=%r>' % self.title
 
 
 if __name__ == '__main__':
-    from sqlalchemy.orm import sessionmaker
-    from sqlalchemy import engine
+    from database import engine, SessionLocal
     print('creating database...')
     Base.metadata.create_all(engine)
     note1 = Note(title='hello world')
     note1.body = 'my first note'
     note2 = Note(title='goodbye')
     note2.body = 'my second note'
-    Session = sessionmaker(bind=engine)
-    session = Session()
+    session = SessionLocal()
     session.add_all([note1, note2])
     session.commit()
