@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="eng">
+  <head>
+    <meta charset="UTF-8">
+    <title>notes</title>
+  </head>
+  <body>
+    <h1>notes</h1>
+    <ul>
+      <dl>
+        {% for note in notes %}
+        <dt>{{ note.title }}</dt>
+        <dd>{{ note.body }}</dd>
+        {% endfor %}
+      </dl>
+    </ul>
+  </body>
+</html>
