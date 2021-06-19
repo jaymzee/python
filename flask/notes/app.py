@@ -1,18 +1,18 @@
-from flask import Flask, _app_ctx_stack, jsonify, url_for, render_template, request
-from sqlalchemy.orm import scoped_session
+import flask
+import sqlalchemy
 
 from models import Note
 from schemas import NoteSchema
 from database import SessionLocal, engine
+from flask import Flask, jsonify, render_template, request, abort
+from sqlalchemy.exc import SQLAlchemyError
 
 app = Flask(__name__)
 
-app.session = scoped_session(
+session = sqlalchemy.orm.scoped_session(
     SessionLocal,
-    scopefunc=_app_ctx_stack.__ident_func__
+    scopefunc=flask._app_ctx_stack.__ident_func__
 )
-
-session = app.session
 
 @app.route('/')
 def index():
@@ -27,25 +27,40 @@ def get_notes():
 
 @app.route('/notes/', methods=['POST'])
 def create_note():
-    schema = NoteSchema()
-    note = schema.load(request.json, session=session)
-    session.add(note)
-    session.commit()
-    return jsonify(id=note.id)
+    try:
+        schema = NoteSchema()
+        note = schema.load(request.json, session=session)
+        session.add(note)
+        session.commit()
+    except Exception as err:
+        abort(403, description=err)
+    return schema.dump(note)
 
 @app.route('/notes/<int:id>', methods=['GET', 'PUT', 'DELETE'])
 def note(id):
     schema = NoteSchema()
     note = session.query(Note).get(id)
+    if note is None:
+        abort(404)
     if request.method == 'DELETE':
-        session.delete(note)
-        session.commit()
-        return 'deleted'
+        try:
+            session.delete(note)
+            session.commit()
+        except SQLAlchemyError as err:
+            abort(403, description=err)
     elif request.method == 'PUT':
-        note = schema.load(request.json, session=session,
-                           instance=note, partial=True)
-        session.commit()
-        return 'updated'
-    else:
-        return schema.dump(note)
+        try:
+            note = schema.load(request.json, session=session,
+                               instance=note, partial=True)
+            session.commit()
+        except Exception as err:
+            abort(403, description=err)
+    return schema.dump(note)
 
+@app.errorhandler(403)
+def forbidden(e):
+    return jsonify(error=str(e)), 403
+
+@app.errorhandler(404)
+def not_found(e):
+    return jsonify(error=str(e)), 404
