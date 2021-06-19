@@ -5,8 +5,8 @@ class Note(Base):
     __tablename__ = "notes"
 
     id = Column(Integer, primary_key=True)
-    title = Column(String(40))
-    body = Column(String)
+    title = Column(String(40), nullable=False, default='')
+    body = Column(String, nullable=False, default='')
 
     def __repr__(self):
         return '<Note title=%r>' % self.title
