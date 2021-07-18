@@ -1,3 +1,6 @@
+# uses Manim by Grant Sanderson (https://github.com/3b1b/manim)
+# there's also the community edition fork (https://www.manim.community/)
+
 from manimlib.imports import *
 
 class TestScene(Scene):
