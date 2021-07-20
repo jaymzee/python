@@ -3,6 +3,4 @@
 y = 0
 for x in range(13):
     print("%2d^2 = %3d" % (x, y))
-    y += x
-    y += x
-    y += 1
+    y += x + x + 1
