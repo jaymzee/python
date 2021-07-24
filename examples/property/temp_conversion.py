@@ -1,10 +1,17 @@
+# Requires Python 3.8 (for := assignment) but should work in earlier
+# versions with modification.
+
+# Demonstrates effective use of properties, validation, and using keyword
+# arguments at call site of constructor (instead of doing something like
+# creating a factory method for each Temperature unit type for instance).
+
 class Temperature(object):
     def __init__(self, **kwargs):
-        if tc := kwargs.get('celsius'):
+        if (tc := kwargs.get('celsius')) is not None:
             self.celsius = tc
-        elif tf := kwargs.get('fahrenheit'):
+        elif (tf := kwargs.get('fahrenheit')) is not None:
             self.fahrenheit = tf
-        elif tk := kwargs.get('kelvin'):
+        elif (tk := kwargs.get('kelvin')) is not None:
             self.kelvin = tk
         else:
             self.kelvin = 0.0
