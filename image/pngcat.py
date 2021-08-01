@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 
+# displays png images in the kitty terminal
+# similar to 'icat'
+
 import sys
 from base64 import standard_b64encode
 
 
-# a='T" -> transmit and display image
-# f=100 -> PNG format
-# f=24  -> 24-bit RGB
-# f=32  -> 32-bit RGBA
 def serialize_gfxcmd(**cmd):
     payload = cmd.pop('payload', None)
     head = ','.join('{}={}'.format(k, v) for k, v in cmd.items())
@@ -35,5 +34,8 @@ if len(sys.argv) < 2:
 for filename in sys.argv[1:]:
     with open(filename, 'rb') as f:
         data = f.read()
+
+    # a='T" -> transmit and display image
+    # f=100 -> PNG format
     write_chunked(a='T', f=100, data=data)
     sys.stdout.write(f'\n{filename}: {len(data)} bytes\n')
