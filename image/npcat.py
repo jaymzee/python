@@ -42,37 +42,41 @@ def maximum(arr, init):
 
 
 # return a list of lines from the txt file
-def loadtxt(filenme):
+def load(filename):
     with open(filename, 'r') as f:
         lines = f.readlines()
     return lines
 
 
 # parse the list of lines into a 2D array
-def parsetxt(lines):
+def parse(lines):
     arr = [[float(v) for v in ln.strip().split(' ')] for ln in lines if not ln.startswith('#')]
     width, height = len(arr[0]), len(arr)
     return width, height, arr
 
 
 # convert the 2D array into rgb data bytes
-def convert_to_rgb(width, height, rows):
-    def to_rgb(v):
-        v = int(255 * v / scale)
+def to_rgb(width, height, array):
+    def rgb(v):
+        v = int(255 * v / max_luminance)
         return (v, v, v)
-    scale = maximum(rows, 0)
-    rgb = ((to_rgb(v) for v in r) for r in rows)
-    data = bytes(flatten(flatten(rgb)))
-    return width, height, data
+    max_luminance = maximum(array, 0)
+    array = ((rgb(v) for v in r) for r in array)
+    data = bytes(flatten(flatten(array)))
+    return {'s':width, 'v':height, 'data':data}
 
 
-if len(sys.argv) < 2:
-    print("Usage: npcat FILES")
-    sys.exit(2)
+def main(argv):
+    if len(argv) < 2:
+        img = to_rgb(*parse(sys.stdin.readlines()))
+        write_chunked(a='T', f=24, **img)
+        sys.stdout.write('\n')
+    else:
+        for filename in argv[1:]:
+            img = to_rgb(*parse(load(filename)))
+            write_chunked(a='T', f=24, **img)
+            sys.stdout.write(f"\n{filename}: {img['s']}x{img['v']}\n")
 
-for filename in sys.argv[1:]:
-    width, height, data = convert_to_rgb(*parsetxt(loadtxt(filename)))
-    # a='T" -> transmit and display image
-    # f=24  -> 24-bit RGB
-    write_chunked(a='T', f=24, s=width, v=height, data=data)
-    sys.stdout.write(f'\n{filename}: {width}x{height}\n')
+
+if __name__ == '__main__':
+    main(sys.argv)
