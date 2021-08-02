@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# display a numpy array (text format) in the kitty terminal
+# display an img file (from the bob ray tracer) in the kitty terminal
 
 import sys
 from base64 import standard_b64encode
@@ -27,7 +27,7 @@ def write_chunked(**cmd):
         cmd.clear()
 
 
-# return a list of lines from the txt file
+# load and return the bob img file 
 def load_img(filename):
     data = []
     with open(filename, 'rb') as f:
@@ -60,7 +60,7 @@ def main(argv):
         sys.stdout.write('\n')
     else:
         for filename in argv[1:]:
-            {s, v, data} = load_img(filename)
+            s, v, data = load_img(filename)
             write_chunked(a='T', f=24, v=h, s=w, data=data)
             sys.stdout.write(f'{filename}: {w}x{h}\n')
 
