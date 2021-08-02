@@ -3,6 +3,7 @@
 # display an img file (from the bob ray tracer) in the kitty terminal
 
 import sys
+import re
 from base64 import standard_b64encode
 
 # kitty stuff
@@ -27,8 +28,12 @@ def write_chunked(**cmd):
         cmd.clear()
 
 
-# load and return the bob img file 
+# load a bob img file
 def load_img(filename):
+    # make sure the filename has an .img extension
+    if not re.search('\.img$', filename, flags=re.IGNORECASE):
+        filename += '.img'
+
     data = []
     with open(filename, 'rb') as f:
         # read img header
@@ -58,11 +63,12 @@ def main(argv):
     if len(argv) == 2:
         write_chunked(a='T', f=24, **load_img(argv[1]))
         sys.stdout.write('\n')
-    else:
+    elif len(argv) > 2:
         for filename in argv[1:]:
-            s, v, data = load_img(filename)
-            write_chunked(a='T', f=24, v=h, s=w, data=data)
-            sys.stdout.write(f'{filename}: {w}x{h}\n')
+            write_chunked(a='T', f=24, **load_img(filename))
+            sys.stdout.write(f'\n{filename}\n')
+    else:
+        print('Usage: imgcat <imgfile>')
 
 
 if __name__ == '__main__':
