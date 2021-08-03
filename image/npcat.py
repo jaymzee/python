@@ -74,8 +74,9 @@ def main(argv):
     else:
         for filename in argv[1:]:
             img = to_rgb(*parse(load(filename)))
+            sys.stdout.write(f"{filename}: {img['s']}x{img['v']}\n")
             write_chunked(a='T', f=24, **img)
-            sys.stdout.write(f"\n{filename}: {img['s']}x{img['v']}\n")
+            sys.stdout.write("\n")
 
 
 if __name__ == '__main__':

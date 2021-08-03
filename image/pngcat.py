@@ -35,7 +35,8 @@ for filename in sys.argv[1:]:
     with open(filename, 'rb') as f:
         data = f.read()
 
+    sys.stdout.write(f'{filename}: {len(data)} bytes\n')
     # a='T" -> transmit and display image
     # f=100 -> PNG format
     write_chunked(a='T', f=100, data=data)
-    sys.stdout.write(f'\n{filename}: {len(data)} bytes\n')
+    sys.stdout.write('\n')
