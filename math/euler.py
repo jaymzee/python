@@ -2,10 +2,6 @@ import sys
 import math
 import pygame
 
-
-size = (400, 400)
-#size = (1280, 1024)
-width, height = size
 fps = 5
 
 black  = (0, 0, 0)
@@ -23,9 +19,11 @@ sf_r = 4      # radius of slope field mark
 
 
 def main():
-    pygame.init()
-    surf = pygame.display.set_mode(size)
-    #surf = pygame.display.set_mode(size, pygame.FULLSCREEN)
+    global size, width, height
+
+    surf = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+    size = surf.get_size()
+    width, height = size
     clock = pygame.time.Clock()
     pygame.mouse.set_visible(0)
 
