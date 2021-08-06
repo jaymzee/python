@@ -21,6 +21,7 @@ sf_r = 4      # radius of slope field mark
 def main():
     global size, width, height
 
+    pygame.init()
     surf = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
     size = surf.get_size()
     width, height = size
