@@ -1,6 +1,8 @@
+import os
 import sys
 import math
 import pygame
+import subprocess
 
 fps = 5
 
@@ -19,14 +21,17 @@ sf_r = 4      # radius of slope field mark
 
 
 def main():
-    global size, width, height
+    global width, height
 
     pygame.init()
-    surf = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-    size = surf.get_size()
-    width, height = size
+    if is_console():
+        surf = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        pygame.mouse.set_visible(0)
+    else:
+        surf = pygame.display.set_mode((400, 400))
+
+    width, height = surf.get_size()
     clock = pygame.time.Clock()
-    pygame.mouse.set_visible(0)
 
     plot_example_2(surf)
 
@@ -174,5 +179,14 @@ def plot_example_nonlinear(s):
     plot_euler(s, f, -0.95, -0.80, 1, 0.0001)
 
 
+def is_console():
+    try:
+        result = subprocess.run('tty'.split(), capture_output=True)
+    except OSError as e:
+        return false
+    return result.stdout.startswith(b'/dev/tty')
+
+
 if __name__ == '__main__':
     main()
+
