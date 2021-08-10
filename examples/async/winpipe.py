@@ -1,30 +1,37 @@
+import sys
 import asyncio
+import aiofiles
 
-async def tx1to2():
-    com1 = await asyncio.open(r"\\.\pipe\lithium-COM1", "r")
-    com2 = await asyncio.open(r"\\.\pipe\lithium-COM2", "w")
+
+async def txrx(f1, f2, label):
     while True:
-        b = await com1.read(1)
+        b = await f1.read(1)
         if len(b) == 0:
             break
-        print("com1 got", b)
-        asyncio.sleep(0.5)
-        print("tx to com2", b)
-        com2.write(b)
+        print(label, "got", b)
+        await asyncio.sleep(0.5)
+        print(label, "sending", b)
+        await f2.write(b)
+        await f2.flush()
 
-async def tx2to1():
-    com1 = await asyncio.open(r"\\.\pipe\lithium-COM1", "w")
-    com2 = await asyncio.open(r"\\.\pipe\lithium-COM2", "r")
-    while True:
-        b = await com2.read(1)
-        if len(b) == 0:
-            break
-        print("com2 got", b)
-        asyncio.sleep(0.5)
-        print("tx to com1", b)
-        com1.write(b)
 
-async def main():
-    asyncio.gather(tx1to2(), tx2to1())
+async def main(mode):
+    com1 = await aiofiles.open(r"\\.\pipe\lithium-COM1", "r+")
+    com2 = await aiofiles.open(r"\\.\pipe\lithium-COM2", "r+")
+    if mode == 1:
+        label = 'COM1 -> COM2'
+        print(label)
+        await txrx(com1, com2, label)
+    elif mode == 2:
+        label = 'COM2 -> COM1'
+        print(label)
+        await txrx(com2, com1, label)
+    else:
+        print('COM1 <-> COM2')
+        await asyncio.gather(txrx(com1, com2, 'COM1 -> COM2'), txrx(com2, com1, 'COM1 <- COM2'))
 
-asyncio.run(main())
+
+if len(sys.argv) < 2:
+    asyncio.run(main(0))
+else:
+    asyncio.run(main(int(sys.argv[1])))
