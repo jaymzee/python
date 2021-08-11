@@ -8,7 +8,7 @@ async def txrx(reader, writer, baud, localecho):
         if len(data) == 0:
             break
         if localecho:
-            sys.stdout.write(data.decode('ascii'))
+            sys.stdout.write(chr(data[0]))
             sys.stdout.flush()
         await asyncio.sleep(10 / baud)
         writer.write(data)
@@ -27,4 +27,4 @@ async def main(baud):
 if len(sys.argv) < 2:
     asyncio.run(main(9600))
 else:
-    asyncio.run(main(int(sys.argv[1])))
+    asyncio.run(main(float(sys.argv[1])))
