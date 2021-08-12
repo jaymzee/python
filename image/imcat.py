@@ -69,7 +69,7 @@ def main(argv):
             write_chunked(a='T', f=24, **load_img(filename))
             sys.stdout.write('\n')
     else:
-        print('Usage: imgcat <imgfile>')
+        print('Usage: imcat <imgfile>')
 
 
 if __name__ == '__main__':
