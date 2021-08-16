@@ -4,10 +4,12 @@ import time
 
 ctsstr = ['!CTS', ' CTS']
 dsrstr = ['!DSR', ' DSR']
-cdstr =  ['!CD ', ' CD ']
-ristr =  ['!RI ', ' RI ']
+cdstr =  ['!CD', ' CD']
+ristr =  ['!RI', ' RI']
 
 def echo(sp):
+    sp.setDTR(1)
+    sp.setRTS(0)
     while True:
         now = '\r' + time.asctime()
         sp.write(bytes(now, 'ascii'))
@@ -27,7 +29,7 @@ def echo(sp):
 
 if len(sys.argv) > 1:
     device = sys.argv[1]
-    with serial.Serial(f'/dev/{device}') as ser:
+    with serial.Serial(f'/dev/{device}', 1200) as ser:
         print(f"opened {ser.name}")
         echo(ser)
 else:
