@@ -1,4 +1,9 @@
+import os
 import sys
+
+# enable colors in Windows 10 Console
+if os.environ.get('SESSIONNAME', '') == 'Console':
+    os.system("color")
 
 def print_color(val):
     sys.stdout.write(f'\033[48;5;{val}m ')

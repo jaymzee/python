@@ -2,14 +2,14 @@ import serial
 import sys
 import time
 
-ctsstr = ['!CTS', ' CTS']
-dsrstr = ['!DSR', ' DSR']
-cdstr =  ['!CD', ' CD']
-ristr =  ['!RI', ' RI']
+ctsstr = ['\x1b[1;30m!CTS\x1b[m', ' CTS']
+dsrstr = ['\x1b[1;30m!DSR\x1b[m', ' DSR']
+cdstr =  ['\x1b[1;30m!CD\x1b[m', ' CD']
+ristr =  ['\x1b[1;30m!RI\x1b[m', ' RI']
 
 def echo(sp):
-    sp.setDTR(1)
-    sp.setRTS(0)
+    sp.dtr = 1
+    sp.rts = 1
     while True:
         now = '\r' + time.asctime()
         sp.write(bytes(now, 'ascii'))
@@ -20,16 +20,16 @@ def echo(sp):
         else:
             data = ''
         print('\r',
-            dsrstr[sp.getDSR()],
-            ctsstr[sp.getCTS()],
-            cdstr[sp.getCD()],
-            ristr[sp.getRI()],
+            dsrstr[sp.dsr],
+            ctsstr[sp.cts],
+            cdstr[sp.cd],
+            ristr[sp.ri],
             data, ' ' * 30, end='')
 
 
 if len(sys.argv) > 1:
     device = sys.argv[1]
-    with serial.Serial(f'/dev/{device}', 1200) as ser:
+    with serial.Serial(device, 1200) as ser:
         print(f"opened {ser.name}")
         echo(ser)
 else:
