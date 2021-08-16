@@ -1,0 +1,4 @@
+miniterm    installed with pyserial
+minicom     simple Terminal Emulator
+minimodem   modem emulator (audio)
+tcpser      hayes modem emulator (connects to bbs over tcp/ip)
