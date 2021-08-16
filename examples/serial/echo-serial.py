@@ -19,7 +19,7 @@ def echo(sp):
         else:
             data = ''
             time.sleep(0.1)
-        print(
+        print('  ',
             dsrstr[sp.dsr],
             ctsstr[sp.cts],
             cdstr[sp.cd],
