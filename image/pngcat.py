@@ -27,16 +27,23 @@ def write_chunked(**cmd):
         cmd.clear()
 
 
-if len(sys.argv) < 2:
-    print("Usage: pngcat FILES")
-    sys.exit(2)
+def main(argv):
+    if len(argv) == 2:
+        with open(argv[-1], 'rb') as f:
+            data = f.read()
+        write_chunked(a='T', f=100, data=data)
+        sys.stdout.write('\n')
+    elif len(argv) > 2:
+        for filename in argv[1:]:
+            with open(filename, 'rb') as f:
+                data = f.read()
+            sys.stdout.write(f'{filename}\n')
+            write_chunked(a='T', f=100, data=data)
+            sys.stdout.write('\n')
+    else:
+        print("Usage: pngcat pngfile")
+        sys.exit(2)
 
-for filename in sys.argv[1:]:
-    with open(filename, 'rb') as f:
-        data = f.read()
 
-    sys.stdout.write(f'{filename}: {len(data)} bytes\n')
-    # a='T" -> transmit and display image
-    # f=100 -> PNG format
-    write_chunked(a='T', f=100, data=data)
-    sys.stdout.write('\n')
+if __name__ == '__main__':
+    main(sys.argv)
