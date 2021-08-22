@@ -1,5 +1,11 @@
+"""
+save data read from a windows pipe to a file
+e.g. a serial port device in virtual box can use a windows pipe
+
+a ~ indicates the end of transmission, so binary files should first
+be base64 encoded then you add the ~ with echo ~ >>file
+"""
 import threading
-import time
 import sys
 import os
 
@@ -12,16 +18,12 @@ def echo(pipe, file):
             break
         c = rxb[0]
         os.write(file,rxb)
-        time.sleep(0.001)
 
 
 def kb_task():
     input()
     print('key pressed - exiting')
     running = False
-    os.close(file)
-    os.close(pipe)
-    kb_thread.kill()
     sys.exit(0)
 
 
@@ -34,6 +36,8 @@ if len(sys.argv) > 1:
     print('press a key to quit')
     kb_thread = threading.Thread(target=kb_task, daemon=True).start()
     echo(pipe, file)
+    os.close(file)
+    os.close(pipe)
 else:
     print("Usage: winpiperd pipename")
     exit(2)
