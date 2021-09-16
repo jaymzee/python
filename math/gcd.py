@@ -19,13 +19,22 @@ def count(xs):
     return {x: xs.count(x) for x in S}
 
 
-# g is the function to apply: min for gcf or max for lcm
-def gcf_lcm(g, *nums):
+def gcd(*nums):
     rslt = count(prime_factors(nums[0]))
     for m in nums:
         facts = count(prime_factors(m))
         # each factor is f^n
-        rslt = {f: g(rslt[f], n) for f, n in facts.items() if f in rslt}
+        rslt = {f: min(rslt[f], n) for f, n in facts.items() if f in rslt}
+    return rslt
+
+
+def lcm(*nums):
+    rslt = count(prime_factors(nums[0]))
+    for m in nums:
+        facts = count(prime_factors(m))
+        # each factor is f^n
+        for f, n in facts.items():
+            rslt[f] = max(n, rslt.get(f, 0))
     return rslt
 
 
@@ -34,16 +43,20 @@ def usage():
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 2:
+    if len(sys.argv) > 1:
         try:
             nums = [int(arg) for arg in sys.argv[1:]]
         except:
             usage();
             sys.exit(2)
-        if 'gcf' in sys.argv[0]:
-            print(gcf_lcm(min, *nums))
+        if 'gcd' in sys.argv[0]:
+            factors = gcd(*nums)
         else:
-            print(gcf_lcm(max, *nums))
+            factors = lcm(*nums)
+        total = 1
+        for f, n in factors.items():
+            total *= f**n
+        print(factors, total)
     else:
         usage()
         sys.exit(2)
