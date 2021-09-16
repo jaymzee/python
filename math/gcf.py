@@ -16,20 +16,35 @@ def prime_factors(n):
 
 def count(xs):
     S = set(xs)
-    return S, {x: xs.count(x) for x in S}
+    return {x: xs.count(x) for x in S}
+
+
+# g is the function to apply: min for gcf or max for lcm
+def gcf_lcm(g, *nums):
+    rslt = count(prime_factors(nums[0]))
+    for m in nums:
+        facts = count(prime_factors(m))
+        # each factor is f^n
+        rslt = {f: g(rslt[f], n) for f, n in facts.items() if f in rslt}
+    return rslt
+
+
+def usage():
+    sys.stderr.write(f"Usage: {sys.argv[0]} integer_list\n")
 
 
 if __name__ == "__main__":
     if len(sys.argv) > 2:
-        args = sys.argv[1:]
-        n = int(args[0])
-        factors, counts = count(prime_factors(n))
-        for arg in args[1:]:
-            nfact, ncount = count(prime_factors(int(arg)))
-            factors = factors.intersection(nfact)
-            counts = {f: min(counts[f], c) for f, c in ncount.items() if f in counts}
-        print(factors, counts)
+        try:
+            nums = [int(arg) for arg in sys.argv[1:]]
+        except:
+            usage();
+            sys.exit(2)
+        if 'gcf' in sys.argv[0]:
+            print(gcf_lcm(min, *nums))
+        else:
+            print(gcf_lcm(max, *nums))
     else:
-        sys.stderr.write("Usage: gcf integer_list\n")
+        usage()
         sys.exit(2)
 
