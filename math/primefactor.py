@@ -14,9 +14,10 @@ def prime_factors(n):
     return n, factors
 
 
-if len(sys.argv) > 1:
-    n = int(sys.argv[1])
-    print(*prime_factors(n))
-else:
-    sys.stderr.write("Usage: prime-factors INTEGER\n")
-    sys.exit(2)
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        n = int(sys.argv[1])
+        print(*prime_factors(n))
+    else:
+        sys.stderr.write("Usage: prime-factors INTEGER\n")
+        sys.exit(2)
