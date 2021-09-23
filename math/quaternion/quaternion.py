@@ -52,6 +52,8 @@ v, but rotated from where it was.
 
 import numpy as np
 
+pi = np.pi
+
 def prod(q1, q0):
     """return the product of the quaternions q1 q0"""
 
@@ -82,22 +84,27 @@ def rotate(q, v):
     """3D rotation using quaternions
 
     q unit quaternion
-    v "vector" or "pure" quaternion
+    v length 3 vector or length 4 pure quaternion
 
     returns the rotated "vector" p = q* v q
     """
 
-    return prod(prod(conj(q), v), q)
+    v = np.array([0, *v[-3:]]) # make sure it's in quaternion form
+
+    return prod(prod(q, v), conj(q))
 
 
-def rot_q(theta, x, y, z):
+def make(theta, u):
     """return the quaternion q that represents a 3D rotation
 
     theta is the rotation angle in radians
-    x, y, z is the unit axis (Euler axis) that the space will be rotated about.
+    u is the unit axis (Euler axis) that the space will be rotated about.
+      can be length 3 vector or length 4 pure quaternion
     """
+
     s = np.sin(theta/2.0)
     c = np.cos(theta/2.0)
+    x, y, z = u[-3:]
     q = np.array([c, s*x, s*y, s*z])
     return q / norm(q)
 
@@ -117,3 +124,6 @@ if __name__ == "__main__":
     print('conj([1 2 3 4]) =', conj([1,2,3,4]))
     print('norm([1 2 3 4]) =', norm([1,2,3,4]))
     print(prod([1,2,3,4],[5,6,7,8]))
+    print(rotate(make(pi/2, [0, 0, 1]), [0, 1, 0, 0]))
+    print(rotate(make(pi/2, [0, 1, 0]), [0, 0, 0, 1]))
+    print(rotate(make(pi/2, [1, 0, 0]), [0, 0, 1, 0]))
