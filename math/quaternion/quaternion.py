@@ -26,11 +26,11 @@ part of qp
 what happens when you take a unit quaternion q and a pure quaternion v and
 calculate
 
-    p = q* v q
+    p = q v q*
 
 we have
 
-    ||p|| = ||q*|| · ||v|| · ||q||
+    ||p|| = ||q|| · ||v|| · ||q*||
           =   1    · ||v|| ·   1
           = ||v||
 
@@ -40,12 +40,12 @@ but as to the real part,
 
 then
 
-    Re q*(vq) = Re (vq)q*
-              = Re v(qq*)
+    Re q(v q*) = Re (v q*)q
+              = Re v(q* q)
               = Re v
               = 0
 
-so p = q*vq is another pure quaternion, another vector, the same length as
+so p = qvq* is another pure quaternion, another vector, the same length as
 v, but rotated from where it was.
 
 """
@@ -114,6 +114,6 @@ if __name__ == "__main__":
     print('kj = -i', prod([0,0,0,1], [0,0,1,0]))
     print('ik = -j', prod([0,1,0,0], [0,0,0,1]))
     print('ijk = -1', prod(prod([0,1,0,0], [0,0,1,0]), [0,0,0,1]))
-
     print('conj([1 2 3 4]) =', conj([1,2,3,4]))
     print('norm([1 2 3 4]) =', norm([1,2,3,4]))
+    print(prod([1,2,3,4],[5,6,7,8]))
