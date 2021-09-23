@@ -81,6 +81,10 @@ def norm(q):
 
 
 def rotate(q, v):
+    v = np.array([0, *v[-3:]])
+    return prod(prod(q, v), conj(q))
+
+def rotate2(q, v):
     """3D rotation using quaternions
 
     q unit quaternion
@@ -89,9 +93,21 @@ def rotate(q, v):
     returns the rotated "vector" p = q* v q
     """
 
-    v = np.array([0, *v[-3:]]) # make sure it's in quaternion form
+    # unfolded because it's faster than prod(prod(q, v), conj(q))
 
-    return prod(prod(q, v), conj(q))
+    b, c, d = v[-3:]
+    w, x, y, z = q
+    bw, bx, by, bz = b*w, b*x, b*y, b*z
+    cw, cx, cy, cz = c*w, c*x, c*y, c*z
+    dw, dx, dy, dz = d*w, d*x, d*y, d*z
+
+    # q v q*
+    return np.array([
+        w*(-bx - cy - dz) - x*(-bw + cz - dy) + y*( bz + cw - dx) + z*(-by + cx + dw),
+        w*( bw - cz + dy) - x*(-bx - cy - dz) + y*(-by + cx + dw) - z*( bz + cw - dx),
+        w*( bz + cw - dx) - x*(-by + cx + dw) - y*(-bx - cy - dz) - z*(-bw + cz - dy),
+        w*(-by + cx + dw) + x*( bz + cw - dx) - y*( bw - cz + dy) - z*(-bx - cy - dz)
+    ])
 
 
 def make(theta, u):
